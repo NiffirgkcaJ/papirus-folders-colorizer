@@ -51,6 +51,14 @@ wget -qO- https://git.io/papirus-folders-install | sh
 
 ## Installation
 
+### From extensions.gnome.org (Recommended)
+
+The easiest way to install is from the official GNOME Extensions website.
+
+<a href="https://extensions.gnome.org/extension/9261/papirus-folders-colorizer/">
+<img src="https://github.com/andyholmes/gnome-shell-extensions-badge/raw/master/get-it-on-ego.svg" alt="Get it on EGO" width="200" />
+</a>
+
 ### Installing from a ZIP File
 
 1.  **Download the ZIP:** Go to the [Releases](https://github.com/NiffirgkcaJ/papirus-folders-colorizer/releases) page and download the latest `papirus-folders-colorizer@NiffirgkcaJ.github.com.zip` file.
