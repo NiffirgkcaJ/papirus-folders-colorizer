@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="papirus-folders-colorizer">
+    <schema id="org.gnome.shell.extensions.papirus-folders-colorizer" path="/org/gnome/shell/extensions/papirus-folders-colorizer/">
+        <!-- Settings -->
+        <key name="original-icon-theme" type="s">
+            <default>''</default>
+            <summary>Original icon theme</summary>
+            <description>The icon theme that was active before this extension changed it. Used to restore on disable.</description>
+        </key>
+    </schema>
+</schemalist>
