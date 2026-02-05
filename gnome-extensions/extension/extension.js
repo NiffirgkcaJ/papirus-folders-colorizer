@@ -84,6 +84,9 @@ export default class PapirusFoldersColorizerExtension extends Extension {
 
     /**
      * Disconnect signal handlers and restore original theme.
+     * Session-mode aware by properly cleaning up all resources.
+     * Disconnects accent-color and color-scheme signals.
+     * Destroys the debouncer, restores the original theme, and nulls all settings.
      */
     disable() {
         if (this._accentColorChangedId) {
@@ -190,20 +193,57 @@ export default class PapirusFoldersColorizerExtension extends Extension {
     }
 
     /**
-     * Copy a theme directory using cp command.
+     * Copy a theme directory recursively using async native Gio operations.
      * @param {string} sourcePath - Source theme path.
      * @param {string} destPath - Destination theme path.
      */
     async _copyThemeAsync(sourcePath, destPath) {
         try {
-            const result = await runCommandAsync(['cp', '-r', '--reflink=auto', sourcePath, destPath]);
-            if (result.success) {
-                console.log(`[PapirusFoldersColorizer] Successfully copied theme to ${destPath}`);
-            } else {
-                console.error(`[PapirusFoldersColorizer] Copy failed: ${result.stderr}`);
-            }
+            await this._copyDirectoryRecursiveAsync(Gio.File.new_for_path(sourcePath), Gio.File.new_for_path(destPath));
+            console.log(`[PapirusFoldersColorizer] Successfully copied theme to ${destPath}`);
         } catch (e) {
             console.error(`[PapirusFoldersColorizer] Failed to copy theme: ${e.message}`);
+        }
+    }
+
+    /**
+     * Recursively copy a directory and its contents asynchronously.
+     * @param {Gio.File} source - Source directory.
+     * @param {Gio.File} dest - Destination directory.
+     */
+    async _copyDirectoryRecursiveAsync(source, dest) {
+        const sourceType = source.query_file_type(Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
+
+        if (sourceType === Gio.FileType.SYMBOLIC_LINK) {
+            const info = source.query_info('standard::symlink-target', Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
+            const target = info.get_symlink_target();
+            if (dest.query_exists(null)) dest.delete(null);
+            dest.make_symbolic_link(target, null);
+        } else if (sourceType === Gio.FileType.DIRECTORY) {
+            if (!dest.query_exists(null)) {
+                dest.make_directory_with_parents(null);
+            }
+
+            const enumerator = source.enumerate_children('standard::name', Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
+
+            const children = [];
+            let info;
+            while ((info = enumerator.next_file(null)) !== null) {
+                children.push(info.get_name());
+            }
+
+            await children.reduce((chain, name) => chain.then(() => this._copyDirectoryRecursiveAsync(source.get_child(name), dest.get_child(name))), Promise.resolve());
+        } else {
+            await new Promise((resolve, reject) => {
+                source.copy_async(dest, Gio.FileCopyFlags.OVERWRITE, GLib.PRIORITY_LOW, null, null, (src, result) => {
+                    try {
+                        src.copy_finish(result);
+                        resolve();
+                    } catch (e) {
+                        reject(e);
+                    }
+                });
+            });
         }
     }
 

@@ -14,7 +14,6 @@ export class Debouncer {
         this._func = func;
         this._wait = wait;
         this._timeoutId = 0;
-        this._isDestroyed = false;
     }
 
     /**
@@ -22,13 +21,9 @@ export class Debouncer {
      * @param {...any} args - Arguments to pass to the original function.
      */
     trigger(...args) {
-        if (this._isDestroyed) return;
-
         if (this._timeoutId > 0) GLib.source_remove(this._timeoutId);
 
         this._timeoutId = GLib.timeout_add(GLib.PRIORITY_LOW, this._wait, () => {
-            if (this._isDestroyed) return GLib.SOURCE_REMOVE;
-
             this._func.apply(this, args);
             this._timeoutId = 0;
             return GLib.SOURCE_REMOVE;
@@ -50,7 +45,6 @@ export class Debouncer {
      * This must be called when the object that uses the debouncer is destroyed.
      */
     destroy() {
-        this._isDestroyed = true;
         if (this._timeoutId > 0) {
             GLib.source_remove(this._timeoutId);
             this._timeoutId = 0;
