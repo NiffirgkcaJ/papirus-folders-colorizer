@@ -1,5 +1,5 @@
 {
-    "description": "Automatically sync Papirus folder icon colors with your GNOME accent color. Changes folder colors seamlessly when you switch accent colors in Settings.\n\nExternal Packages:\n• `papirus-icon-theme`\n• `papirus-folders`\n\nExtension Homepage:\nhttps://github.com/NiffirgkcaJ/papirus-folders-colorizer\nhttps://gitlab.com/NiffirgkcaJ/papirus-folders-colorizer",
+    "description": "Automatically sync Papirus folder icon colors with your GNOME accent color. Changes folder colors seamlessly when you switch accent colors in Settings.\n\nExternal Dependencies:\n• papirus-icon-theme\n• papirus-folders\n\nExtension Homepage:\nhttps://github.com/NiffirgkcaJ/papirus-folders-colorizer\nhttps://gitlab.com/NiffirgkcaJ/papirus-folders-colorizer",
     "name": "Papirus Folders Colorizer",
     "shell-version": [
         "47",
