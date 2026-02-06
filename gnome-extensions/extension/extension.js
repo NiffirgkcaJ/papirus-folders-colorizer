@@ -84,9 +84,9 @@ export default class PapirusFoldersColorizerExtension extends Extension {
 
     /**
      * Disconnect signal handlers and restore original theme.
-     * Session-mode aware by properly cleaning up all resources.
      * Disconnects accent-color and color-scheme signals.
      * Destroys the debouncer, restores the original theme, and nulls all settings.
+     * Uses session-modes to keep Papirus theme active on lockscreen instead of reverting to the previous theme.
      */
     disable() {
         if (this._accentColorChangedId) {
