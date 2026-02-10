@@ -8,12 +8,12 @@ export const PapirusThemes = ['Papirus', 'Papirus-Dark', 'Papirus-Light'];
  */
 export const AccentToPapirus = {
     blue: 'blue',
-    teal: 'teal',
+    teal: 'darkcyan',
     green: 'green',
     yellow: 'yellow',
-    orange: 'orange',
+    orange: 'deeporange',
     red: 'red',
     pink: 'pink',
-    purple: 'violet',
-    slate: 'grey',
+    purple: 'magenta',
+    slate: 'bluegrey',
 };
