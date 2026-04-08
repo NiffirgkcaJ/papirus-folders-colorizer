@@ -10,7 +10,7 @@
     "session-modes": ["user", "unlock-dialog"],
     "url": "https://github.com/NiffirgkcaJ/papirus-folders-colorizer",
     "uuid": "papirus-folders-colorizer@NiffirgkcaJ.github.com",
-    "version": 4,
+    "version": 5,
     "settings-schema": "org.gnome.shell.extensions.papirus-folders-colorizer",
     "textdomain": "papirus-folders-colorizer"
 }
